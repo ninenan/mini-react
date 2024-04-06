@@ -5,7 +5,8 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"lint": "ESLINT_USE_FLAT_CONFIG=false eslint --ext .ts,.jsx,.tsx,.js --fix --quiet ./packages",
+		"lint": "ESLINT_USE_FLAT_CONFIG=false eslint --ext .ts,.jsx,.tsx --fix --quiet ./packages",
+		"build:dev": "rm -rf dist && rollup --conifg scripts/rollup/dev.config.js",
 		"prepare": "husky"
 	},
 	"keywords": [],
@@ -23,6 +24,7 @@
 		"globals": "^15.0.0",
 		"husky": "^9.0.11",
 		"prettier": "^3.2.5",
+		"rollup": "^4.14.0",
 		"typescript": "^5.4.4",
 		"typescript-eslint": "^7.5.0"
 	}
