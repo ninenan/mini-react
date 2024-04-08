@@ -1,0 +1,9 @@
+{
+	"name": "shared",
+	"version": "1.0.0",
+	"description": "所有的公共方法和类型定义",
+	"module": "index.ts",
+	"keywords": [],
+	"author": "",
+	"license": "ISC"
+}
