@@ -4,25 +4,25 @@ import { Flags, NoFlags } from './fiberFlags';
 import { Container } from './hostConfig'; // 不同的宿主环境都需要实现它自身的 hostConfig
 
 export class FiberNode {
-	type: NeverAny;
-	tag: WorkTag;
-	pendingProps: Props;
+	tag: WorkTag; // 标签，标识当前的 FiberNode 是什么类型
+	type: NeverAny; // 如果 tag 是函数组件，FunctionCompoent 那么这里指向的就是具体的函数 () => {}
+	pendingProps: Props; // 初始时的 props
 	key: Key;
-	stateNode: NeverAny;
+	stateNode: NeverAny; // HostComponent <div> div DOM
 
-	return: FiberNode | null;
-	sibling: FiberNode | null;
-	child: FiberNode | null;
-	index: number;
+	// 构成树状结构
+	return: FiberNode | null; // 父级
+	sibling: FiberNode | null; // 兄弟级
+	child: FiberNode | null; // 子级
+	index: number; // 如果同级的有多个，指向当前的下标 <ul>li * 3</ul>
 
-	memoizedProps: Props | null;
-	memoizedState: NeverAny;
-	// 用于来会替换
+	memoizedProps: Props | null; // 更新完成之后新的 props
+	memoizedState: NeverAny; // 更新完成之后新的 state
+	// 用于来回替换
 	// 如果当前树是 workInProgress，那当前值指向的是 current
 	// 如果当前树是 current，那当前值指向的是 workInProgress
 	alternate: FiberNode | null;
-	// 当前操作的标记
-	flags: Flags;
+	flags: Flags; // 当前操作的标记
 	updateQueue: unknown; // 更新
 
 	constructor(tag: WorkTag, pendingProps: Props, key: Key) {
@@ -35,22 +35,16 @@ export class FiberNode {
 		this.type = null;
 
 		// 构成树状结构
-		// 指向父级
 		this.return = null;
-		// 兄弟级
 		this.sibling = null;
-		// 子级
 		this.child = null;
-		// 如果同级的有多个，指向当前的下标 <ul>li * 3</ul>
 		this.index = 0;
 
 		// 工作单元
-		// 初始时的 props
-		this.pendingProps = pendingProps;
-		// 结束时已确定的 props
+		this.pendingProps = pendingProps; // 初始时的 props
 		this.memoizedProps = null;
-		this.updateQueue = null;
 		this.memoizedState = null;
+		this.updateQueue = null;
 
 		this.alternate = null;
 		// 副作用

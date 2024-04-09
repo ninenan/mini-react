@@ -36,24 +36,29 @@ export const enqueueUpdate = <State>(
 	updateQueue.shared.pending = update;
 };
 
-// 消费 update
+// updateQueue 消费 update
 export const processUpdateQueue = <State>(
-	baseState: State, // 初始化的值
+	baseState: State, // 初始状态
 	pendingUpdate: Update<State> | null // 更新操作
-): { memoizedState: State } => {
+): {
+	memoizedState: State; // 全新状态
+} => {
 	const result: ReturnType<typeof processUpdateQueue<State>> = {
 		memoizedState: baseState
 	};
 
 	if (pendingUpdate !== null) {
 		const action = pendingUpdate.action;
+
 		if (action instanceof Function) {
+			// case 1
 			// baseState 1
-			// update (x) => 2x -> memoizedState 2
+			// update (x) => 2x -> memoizedState 2x
 			result.memoizedState = action(baseState);
 		} else {
+			// case 2
 			// baseState 1
-			// update===2 -> memoizedState 2
+			// update 2 -> memoizedState 2
 			result.memoizedState = action;
 		}
 	}

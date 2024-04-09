@@ -6,15 +6,18 @@ import { HostRoot } from './workTags';
 let workInProgress: FiberNode | null = null;
 
 const prepareFreshStack = (root: FiberRootNode) => {
-	workInProgress = createWorkInProgress(root.current, {});
+	workInProgress = createWorkInProgress(root.current, {}); // 返回创建生成 fiberNode - 与之相对应的 alternate
 };
 
+// 在 Fiber 中调度 update
 export const scheduleUpdateOnFiber = (fiber: FiberNode) => {
 	// TODO: 调度功能
+	// root = fiberRootNode
 	const root = markUpdateFromFiberToRoot(fiber);
 	renderRoot(root);
 };
 
+// 从当前更新节点一直向上遍历直到返回根节点 fiberRootNode
 export const markUpdateFromFiberToRoot = (fiber: FiberNode) => {
 	let node = fiber;
 	let parent = node.return;
@@ -39,7 +42,9 @@ const renderRoot = (root: FiberRootNode) => {
 		try {
 			wookLoop();
 		} catch (error) {
-			console.warn('workloop 发生错误：', error);
+			if (__DEV__) {
+				console.warn('workloop 发生错误：', error);
+			}
 		}
 	} while (true);
 };

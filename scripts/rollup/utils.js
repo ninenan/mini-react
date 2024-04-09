@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import ts from 'rollup-plugin-typescript2';
 import cjs from '@rollup/plugin-commonjs';
+import replace from '@rollup/plugin-replace';
 
 const pkgPath = path.resolve(__dirname, '../../packages'); // 包的路径
 const distPath = path.resolve(__dirname, '../../dist/node_modules'); // 打包产物路径
@@ -24,6 +25,11 @@ export const getPackageJSON = (pkgName) => {
 };
 
 // 获取公共的 rollup 插件
-export const getBaseRollupPlugins = ({ typescript = {} } = {}) => {
-	return [cjs(), ts(typescript)];
+export const getBaseRollupPlugins = ({
+	typescript = {},
+	alias = {
+		__DEV__: true
+	}
+} = {}) => {
+	return [replace(alias), cjs(), ts(typescript)];
 };
