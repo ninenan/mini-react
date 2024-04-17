@@ -41,12 +41,20 @@ const renderRoot = (root: FiberRootNode) => {
 	do {
 		try {
 			wookLoop();
+			break;
 		} catch (error) {
 			if (__DEV__) {
 				console.warn('workloop 发生错误：', error);
 			}
+			workInProgress = null;
 		}
+		// eslint-disable-next-line
 	} while (true);
+
+	const finishedWork = root.current.alternate;
+	root.finishedWork = finishedWork;
+
+	// commitRoot(root);
 };
 
 const wookLoop = () => {

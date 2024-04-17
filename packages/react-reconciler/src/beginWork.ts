@@ -2,6 +2,7 @@ import { ReactElementType } from 'shared/ReactTypes';
 import { FiberNode } from './fiber';
 import { UpdateQueue, processUpdateQueue } from './updateQueue';
 import { HostComponent, HostRoot, HostText } from './workTags';
+import { mountChildFibers, reconcileChildFibers } from './childFibers';
 
 export const beginWork = (wip: FiberNode) => {
 	// 递归中的递阶段
@@ -19,10 +20,12 @@ export const beginWork = (wip: FiberNode) => {
 			}
 			break;
 	}
+
+	return null;
 };
 
 const updateHostRoot = (wip: FiberNode) => {
-	const baseState = wip.memoizedState;
+	const baseState = wip.memoizedState; // 对于首屏渲染肯定是不存在的
 	const updateQueue = wip.updateQueue as UpdateQueue<Element>;
 	const pending = updateQueue.shared.pending;
 	updateQueue.shared.pending = null; // 使用完了之后记得将其置为 null
@@ -30,7 +33,7 @@ const updateHostRoot = (wip: FiberNode) => {
 	wip.memoizedState = memoizedState;
 
 	const nextChildren = wip.memoizedState;
-	reconcileChildren(wip, nextChildren);
+	reconcileChildren(wip, nextChildren); // 返回子 fiberNode
 	return wip.child;
 };
 
@@ -42,7 +45,14 @@ const updateHostComponent = (wip: FiberNode) => {
 	return wip.child;
 };
 
-const reconcileChildren = (
-	wip: FiberNode,
-	nextChildren?: ReactElementType
-) => {};
+const reconcileChildren = (wip: FiberNode, children?: ReactElementType) => {
+	const current = wip.alternate;
+
+	if (current !== null) {
+		// update
+		wip.child = reconcileChildFibers(wip, current.child, children);
+	} else {
+		// mount
+		wip.child = mountChildFibers(wip, null, children);
+	}
+};

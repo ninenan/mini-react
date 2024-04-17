@@ -1,5 +1,5 @@
-import { Key, NeverAny, Props } from 'shared/ReactTypes';
-import { WorkTag } from './workTags';
+import { Key, NeverAny, Props, ReactElementType } from 'shared/ReactTypes';
+import { FunctionComponent, HostComponent, WorkTag } from './workTags';
 import { Flags, NoFlags } from './fiberFlags';
 import { Container } from './hostConfig'; // 不同的宿主环境都需要实现它自身的 hostConfig
 
@@ -23,6 +23,7 @@ export class FiberNode {
 	// 如果当前树是 current，那当前值指向的是 workInProgress
 	alternate: FiberNode | null;
 	flags: Flags; // 当前操作的标记
+	subtreeFlags: Flags; // 子树中的标记
 	updateQueue: unknown; // 更新
 
 	constructor(tag: WorkTag, pendingProps: Props, key: Key) {
@@ -49,6 +50,7 @@ export class FiberNode {
 		this.alternate = null;
 		// 副作用
 		this.flags = NoFlags;
+		this.subtreeFlags = NoFlags;
 	}
 }
 
@@ -92,4 +94,21 @@ export const createWorkInProgress = (
 	wip.memoizedState = current.memoizedState;
 
 	return wip;
+};
+
+export const createFiberFromElement = (element: ReactElementType) => {
+	const { type, key, props } = element;
+	let fiberTag: WorkTag = FunctionComponent; // 默认是函数组件
+
+	if (typeof type === 'string') {
+		// <div></div> 'div'
+		fiberTag = HostComponent;
+	} else if (typeof type !== 'function' && __DEV__) {
+		console.warn('未定义的type类型', element);
+	}
+
+	const fiber = new FiberNode(fiberTag, props, key);
+	fiber.type = type;
+
+	return fiber;
 };
