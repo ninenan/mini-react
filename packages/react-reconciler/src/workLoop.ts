@@ -51,9 +51,13 @@ const renderRoot = (root: FiberRootNode) => {
 		// eslint-disable-next-line
 	} while (true);
 
+	if (workInProgress !== null) {
+		console.warn('render 阶段结束时 wip 不会 null');
+	}
 	const finishedWork = root.current.alternate;
 	root.finishedWork = finishedWork;
 
+	// TODO: commint 阶段操作
 	// commitRoot(root);
 };
 
