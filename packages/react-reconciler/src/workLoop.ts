@@ -1,6 +1,7 @@
 import { beginWork } from './beginWork';
 import { completeWork } from './completeWork';
 import { FiberNode, FiberRootNode, createWorkInProgress } from './fiber';
+import { MutationMask, NoFlags } from './fiberFlags';
 import { HostRoot } from './workTags';
 
 let workInProgress: FiberNode | null = null;
@@ -40,7 +41,7 @@ const renderRoot = (root: FiberRootNode) => {
 
 	do {
 		try {
-			wookLoop();
+			workLoop();
 			break;
 		} catch (error) {
 			if (__DEV__) {
@@ -58,10 +59,39 @@ const renderRoot = (root: FiberRootNode) => {
 	root.finishedWork = finishedWork;
 
 	// TODO: commint 阶段操作
-	// commitRoot(root);
+	// wip fiberNode树 树中的flags
+	commitRoot(root);
 };
 
-const wookLoop = () => {
+const commitRoot = (root: FiberRootNode) => {
+	const finishedWork = root.finishedWork;
+	if (finishedWork === null) {
+		return;
+	}
+
+	if (__DEV__) {
+		console.warn('commit 阶段开始', finishedWork);
+	}
+
+	// 重置
+	root.finishedWork = null;
+
+	// 判断是否存在 3 个子阶段需要执行的操作
+	const subtreeHasEffect =
+		(finishedWork?.subtreeFlags & MutationMask) !== NoFlags;
+	const rootHasEffect = (finishedWork?.flags & MutationMask) !== NoFlags;
+
+	if (subtreeHasEffect || rootHasEffect) {
+		// beforeMutation
+		// mutation Placement
+		root.current = finishedWork;
+		// layout
+	} else {
+		root.current = finishedWork;
+	}
+};
+
+const workLoop = () => {
 	while (workInProgress !== null) {
 		performUnitOfWork(workInProgress);
 	}
