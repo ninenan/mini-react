@@ -45,7 +45,7 @@ const renderRoot = (root: FiberRootNode) => {
 			break;
 		} catch (error) {
 			if (__DEV__) {
-				console.warn('workloop 发生错误：', error);
+				console.warn('workLoop 发生错误：', error);
 			}
 			workInProgress = null;
 		}
@@ -58,7 +58,7 @@ const renderRoot = (root: FiberRootNode) => {
 	const finishedWork = root.current.alternate;
 	root.finishedWork = finishedWork;
 
-	// TODO: commint 阶段操作
+	// TODO: commit 阶段操作
 	// wip fiberNode树 树中的flags
 	commitRoot(root);
 };
