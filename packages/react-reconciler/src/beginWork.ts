@@ -24,6 +24,8 @@ export const beginWork = (wip: FiberNode) => {
 	return null;
 };
 
+// 1. 计算状态的最新值
+// 2. 创造子 fiberNode
 const updateHostRoot = (wip: FiberNode) => {
 	const baseState = wip.memoizedState; // 对于首屏渲染肯定是不存在的
 	const updateQueue = wip.updateQueue as UpdateQueue<Element>;

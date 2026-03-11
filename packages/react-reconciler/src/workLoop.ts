@@ -23,11 +23,13 @@ export const markUpdateFromFiberToRoot = (fiber: FiberNode) => {
 	let node = fiber;
 	let parent = node.return;
 	// 向上遍历，直到 hostRootFiber
+	// 普通的 FiberNode
 	while (parent !== null) {
-		// 普通的 FiberNode
 		node = parent;
 		parent = node.return;
 	}
+
+	// 如果是 hostRootFiber
 	if (node.tag === HostRoot) {
 		return node.stateNode;
 	}
@@ -65,6 +67,7 @@ const renderRoot = (root: FiberRootNode) => {
 
 const commitRoot = (root: FiberRootNode) => {
 	const finishedWork = root.finishedWork;
+
 	if (finishedWork === null) {
 		return;
 	}

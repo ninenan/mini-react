@@ -29,6 +29,7 @@ const ReactElement = (
 };
 
 const hasOwnProperty = Object.prototype.hasOwnProperty;
+// 判断是否不是原型上的属性
 const hasOwn = (obj: Record<string, NeverAny>, key: NeverAny) =>
 	hasOwnProperty.call(obj, key);
 

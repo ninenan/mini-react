@@ -50,6 +50,7 @@ export class FiberNode {
 		this.alternate = null;
 		// 副作用
 		this.flags = NoFlags;
+		// 子树中的副作用
 		this.subtreeFlags = NoFlags;
 	}
 }
@@ -71,7 +72,7 @@ export const createWorkInProgress = (
 	current: FiberNode,
 	pendingProps: Props
 ): FiberNode => {
-	// 双缓冲技术
+	// 双缓存技术
 	let wip = current.alternate;
 
 	if (wip === null) {

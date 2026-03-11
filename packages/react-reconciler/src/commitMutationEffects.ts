@@ -3,6 +3,7 @@ import { MutationMask, NoFlags, Placement } from './fiberFlags';
 import { Container } from './hostConfig';
 import { HostComponent, HostRoot } from './workTags';
 
+// 指向下一个需要执行的 effect
 let nextEffect: FiberNode | null = null;
 
 export const commitMutationEffects = (finishedWork: FiberNode) => {
@@ -38,12 +39,13 @@ const commitMutationEffectsOnFiber = (finishedWork: FiberNode) => {
 	const flags = finishedWork.flags;
 
 	if ((flags & Placement) !== NoFlags) {
-		commitPlacemet(finishedWork);
+		commitPlacement(finishedWork);
+		// 移除对应的 flags
 		finishedWork.flags &= ~Placement;
 	}
 };
 
-const commitPlacemet = (finishedWork: FiberNode) => {
+const commitPlacement = (finishedWork: FiberNode) => {
 	if (__DEV__) {
 		console.warn('执行Placement操作', finishedWork);
 	}
@@ -63,6 +65,7 @@ const getHostParent = (fiber: FiberNode): Container => {
 		if (parentTag === HostComponent) {
 			return parent.stateNode as Container;
 		}
+
 		if (parentTag === HostRoot) {
 			return (parent.stateNode as FiberRootNode).container;
 		}
