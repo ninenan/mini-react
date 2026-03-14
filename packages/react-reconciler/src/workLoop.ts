@@ -1,4 +1,5 @@
 import { beginWork } from './beginWork';
+import { commitMutationEffects } from './commitMutationEffects';
 import { completeWork } from './completeWork';
 import { FiberNode, FiberRootNode, createWorkInProgress } from './fiber';
 import { MutationMask, NoFlags } from './fiberFlags';
@@ -81,13 +82,17 @@ const commitRoot = (root: FiberRootNode) => {
 	root.finishedWork = null;
 
 	// 判断是否存在 3 个子阶段需要执行的操作
+
+	// root subtreeFlags
 	const subtreeHasEffect =
 		(finishedWork?.subtreeFlags & MutationMask) !== NoFlags;
+	// root flags
 	const rootHasEffect = (finishedWork?.flags & MutationMask) !== NoFlags;
 
 	if (subtreeHasEffect || rootHasEffect) {
 		// beforeMutation
 		// mutation Placement
+		commitMutationEffects(finishedWork);
 		root.current = finishedWork;
 		// layout
 	} else {

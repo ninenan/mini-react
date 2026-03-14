@@ -37,7 +37,7 @@ const ChildReconciler = (shouldTrackEffects: boolean) => {
 	const placeSingleChild = (fiber: FiberNode) => {
 		if (shouldTrackEffects && fiber.alternate === null) {
 			// 当首屏渲染且需要追踪副作用的情况下才需要标记副作用
-			fiber.flags != Placement;
+			fiber.flags |= Placement;
 		}
 
 		return fiber;

@@ -13,3 +13,7 @@ export const appendInitialChild = (...args: NeverAny) => {
 export const createTextInstance = (...args: NeverAny) => {
 	return {} as NeverAny;
 };
+
+export const appendChildToContainer = (...args: NeverAny) => {
+	return {} as NeverAny;
+};
