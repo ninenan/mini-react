@@ -68,6 +68,7 @@ const appendAllChildren = (parent: FiberNode, wip: FiberNode) => {
 			if (node.return === null || node.return === wip) {
 				return;
 			}
+
 			node = node?.return;
 		}
 
@@ -77,6 +78,7 @@ const appendAllChildren = (parent: FiberNode, wip: FiberNode) => {
 	}
 };
 
+// 利用 completeWork 向上遍历（归）的过程，将子 fiberNode 的 flags 冒泡到父 fiberNode
 const bubbleProperties = (wip: FiberNode) => {
 	let subtreeFlags = NoFlags;
 	let child = wip.child;

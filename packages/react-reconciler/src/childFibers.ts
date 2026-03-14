@@ -7,12 +7,15 @@ import { REACT_ELEMENT_TYPE } from 'shared/ReactSymbol';
 const ChildReconciler = (shouldTrackEffects: boolean) => {
 	const reconcileSingleElement = (
 		returnFiber: FiberNode, // 父节点
-		currentFiber: FiberNode | null,
-		element: ReactElementType
+		currentFiber: FiberNode | null, // 子节点 fiberNode
+		element: ReactElementType // 子节点 ReactElement
 	) => {
+		console.log('reconcileSingleElement-currentFiber', currentFiber); // 防止打包出错
+
 		// 根据 element 创建 fiberNode
 		const fiber = createFiberFromElement(element);
 		fiber.return = returnFiber;
+
 		return fiber;
 	};
 
@@ -20,19 +23,23 @@ const ChildReconciler = (shouldTrackEffects: boolean) => {
 	const reconcileSingleTextNode = (
 		returnFiber: FiberNode,
 		currentFiber: FiberNode | null,
-		content: string | number
+		content: string | number // 文本内容
 	) => {
+		console.log('reconcileSingleTextNode-currentFiber', currentFiber); // 防止打包出错
+
 		const fiber = new FiberNode(HostText, { content }, null);
 		fiber.return = returnFiber;
 
 		return fiber;
 	};
 
+	// 插入单一节点
 	const placeSingleChild = (fiber: FiberNode) => {
 		if (shouldTrackEffects && fiber.alternate === null) {
 			// 当首屏渲染且需要追踪副作用的情况下才需要标记副作用
 			fiber.flags != Placement;
 		}
+
 		return fiber;
 	};
 

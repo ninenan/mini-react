@@ -11,8 +11,8 @@ const prepareFreshStack = (root: FiberRootNode) => {
 };
 
 // 在 Fiber 中调度 update
+// TODO: 调度功能
 export const scheduleUpdateOnFiber = (fiber: FiberNode) => {
-	// TODO: 调度功能
 	// root = fiberRootNode
 	const root = markUpdateFromFiberToRoot(fiber);
 	renderRoot(root);
@@ -57,6 +57,7 @@ const renderRoot = (root: FiberRootNode) => {
 	if (workInProgress !== null) {
 		console.warn('render 阶段结束时 wip 不会 null');
 	}
+
 	const finishedWork = root.current.alternate;
 	root.finishedWork = finishedWork;
 

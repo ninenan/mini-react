@@ -27,6 +27,7 @@ export const updateContainer = (
 	const hostRootFiber = root.current;
 	const update = createUpdate<ReactElementType | null>(element);
 
+	// 将更新事件插入到 hostRootFiber 的更新队列中
 	enqueueUpdate(
 		hostRootFiber.updateQueue as UpdateQueue<ReactElementType | null>,
 		update

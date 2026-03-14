@@ -55,10 +55,16 @@ export class FiberNode {
 	}
 }
 
+// ReactDOM.createRoot(document.getElementById('root')).render(<App/>)
+//        fiberRootNode
+// 👇-current  👆-stateNode
+//        hostRootFiber-document.getElementById('root')
+// 👇-child  👆-return
+//         App
 export class FiberRootNode {
-	container: Container;
+	container: Container; // 保存宿主环境的节点
 	current: FiberNode;
-	finishedWork: FiberNode | null; // 整个递归流程结束后指向的 FiberNode
+	finishedWork: FiberNode | null; // 整个递归流程结束后指向的 hostRootFiber
 
 	constructor(container: Container, hostRootFiber: FiberNode) {
 		this.container = container;
@@ -85,7 +91,7 @@ export const createWorkInProgress = (
 	} else {
 		// update
 		wip.pendingProps = pendingProps;
-		wip.flags = NoFlags; // 清除副作用
+		wip.flags = NoFlags; // 清除副作用-副作用可能是上一次更新遗留下来的
 	}
 
 	wip.type = current.type;
