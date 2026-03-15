@@ -1,7 +1,7 @@
 import { Key, NeverAny, Props, ReactElementType } from 'shared/ReactTypes';
 import { FunctionComponent, HostComponent, WorkTag } from './workTags';
 import { Flags, NoFlags } from './fiberFlags';
-import { Container } from './hostConfig'; // 不同的宿主环境都需要实现它自身的 hostConfig
+import { Container } from 'hostConfig'; // 不同的宿主环境都需要实现它自身的 hostConfig
 
 export class FiberNode {
 	tag: WorkTag; // 标签，标识当前的 FiberNode 是什么类型

@@ -1,6 +1,6 @@
 import { FiberNode, FiberRootNode } from './fiber';
 import { MutationMask, NoFlags, Placement } from './fiberFlags';
-import { Container, appendChildToContainer } from './hostConfig';
+import { Container, appendChildToContainer } from 'hostConfig';
 import { HostComponent, HostRoot, HostText } from './workTags';
 
 let nextEffect: FiberNode | null = null;
@@ -38,8 +38,12 @@ const commitMutationEffectsOnFiber = (finishedWork: FiberNode) => {
 
 	if ((flags & Placement) !== NoFlags) {
 		commitPlacement(finishedWork);
+		// 将 placement 从 flags 中移除
 		finishedWork.flags &= ~Placement;
 	}
+
+	// flags Update
+	// flags ChildDeletion
 };
 
 const commitPlacement = (finishedWork: FiberNode) => {
@@ -49,11 +53,13 @@ const commitPlacement = (finishedWork: FiberNode) => {
 
 	// parent DOM
 	const hostParent = getHostParent(finishedWork);
-	// finishedWOrk ~~ DOM append parent DOM 中
-	appendPlacementNodeIntoContainer(finishedWork, hostParent);
+	// finishedWork ~~ DOM append parent DOM 中
+	if (hostParent !== null) {
+		appendPlacementNodeIntoContainer(finishedWork, hostParent);
+	}
 };
 
-const getHostParent = (fiber: FiberNode): Container => {
+const getHostParent = (fiber: FiberNode): Container | null => {
 	let parent = fiber.return;
 
 	while (parent) {
@@ -73,6 +79,8 @@ const getHostParent = (fiber: FiberNode): Container => {
 	if (__DEV__) {
 		console.warn('未找到 host parent');
 	}
+
+	return null;
 };
 
 export const appendPlacementNodeIntoContainer = (

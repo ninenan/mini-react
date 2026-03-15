@@ -6,7 +6,7 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"lint": "ESLINT_USE_FLAT_CONFIG=false eslint --ext .ts,.jsx,.tsx --fix --quiet ./packages",
-		"build:dev": "rm -rf dist && rollup --bundleConfigAsCjs --config scripts/rollup/react.config.js",
+		"build:dev": "rm -rf dist && rollup --bundleConfigAsCjs --config scripts/rollup/dev.config.js",
 		"prepare": "husky"
 	},
 	"keywords": [],
@@ -16,6 +16,7 @@
 		"@commitlint/cli": "^19.2.1",
 		"@commitlint/config-conventional": "^19.1.0",
 		"@eslint/js": "^9.0.0",
+		"@rollup/plugin-alias": "^4.0.2",
 		"@rollup/plugin-commonjs": "^25.0.7",
 		"@typescript-eslint/eslint-plugin": "^7.5.0",
 		"commitlint": "^19.2.1",

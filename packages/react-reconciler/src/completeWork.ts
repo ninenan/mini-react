@@ -4,7 +4,7 @@ import {
 	appendInitialChild,
 	createInstance,
 	createTextInstance
-} from './hostConfig';
+} from 'hostConfig';
 import { HostComponent, HostRoot, HostText } from './workTags';
 
 export const completeWork = (wip: FiberNode) => {
@@ -48,7 +48,7 @@ export const completeWork = (wip: FiberNode) => {
 };
 
 // 在 parent 节点中插入 wip 节点
-const appendAllChildren = (parent: FiberNode, wip: FiberNode) => {
+const appendAllChildren = (parent: Element, wip: FiberNode) => {
 	let node = wip.child;
 
 	while (node !== null) {
