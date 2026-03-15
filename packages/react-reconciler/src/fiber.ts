@@ -1,4 +1,4 @@
-import { Key, NeverAny, Props, ReactElementType } from 'shared/ReactTypes';
+import { Key, NeverAny, Props, ReactElementType, Ref } from 'shared/ReactTypes';
 import { FunctionComponent, HostComponent, WorkTag } from './workTags';
 import { Flags, NoFlags } from './fiberFlags';
 import { Container } from 'hostConfig'; // 不同的宿主环境都需要实现它自身的 hostConfig
@@ -9,6 +9,7 @@ export class FiberNode {
 	pendingProps: Props; // 初始时的 props
 	key: Key;
 	stateNode: NeverAny; // HostComponent <div> div DOM
+	ref: Ref;
 
 	// 构成树状结构
 	return: FiberNode | null; // 父级
@@ -40,6 +41,8 @@ export class FiberNode {
 		this.sibling = null;
 		this.child = null;
 		this.index = 0;
+
+		this.ref = null;
 
 		// 工作单元
 		this.pendingProps = pendingProps; // 初始时的 props

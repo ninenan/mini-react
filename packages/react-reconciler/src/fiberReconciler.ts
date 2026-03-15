@@ -12,8 +12,11 @@ import { scheduleUpdateOnFiber } from './workLoop';
 
 // 当执行 ReactDOM.createRoot() 内部将会执行 createContainer 方法
 export const createContainer = (container: Container) => {
+	// 创建 hostRootFiber
 	const hostRootFiber = new FiberNode(HostRoot, {}, null);
+	// 创建 fiberRootNode
 	const root = new FiberRootNode(container, hostRootFiber);
+	// 初始化更新队列
 	hostRootFiber.updateQueue = createUpdateQueue();
 
 	return root;

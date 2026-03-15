@@ -5,6 +5,7 @@ import { FiberNode, FiberRootNode, createWorkInProgress } from './fiber';
 import { MutationMask, NoFlags } from './fiberFlags';
 import { HostRoot } from './workTags';
 
+// 全局指针指向当前正在工作的 fiberNode
 let workInProgress: FiberNode | null = null;
 
 const prepareFreshStack = (root: FiberRootNode) => {
@@ -15,7 +16,9 @@ const prepareFreshStack = (root: FiberRootNode) => {
 // TODO: 调度功能
 export const scheduleUpdateOnFiber = (fiber: FiberNode) => {
 	// root = fiberRootNode
+	// 查找应用根节点
 	const root = markUpdateFromFiberToRoot(fiber);
+	// 构造 fiber 树
 	renderRoot(root);
 };
 
@@ -38,8 +41,9 @@ export const markUpdateFromFiberToRoot = (fiber: FiberNode) => {
 	return null;
 };
 
+// const renderRoot = (root: FiberNode) => {
 const renderRoot = (root: FiberRootNode) => {
-	// 初始化
+	// 初始化 wip 树
 	prepareFreshStack(root);
 
 	do {
