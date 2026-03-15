@@ -128,7 +128,9 @@ const completeUnitOfWork = (fiber: FiberNode) => {
 	let node: FiberNode | null = fiber;
 
 	do {
-		completeWork(fiber);
+		// 执行当前节点 completeWork
+		completeWork(node);
+		// 执行完毕查找兄弟节点
 		const sibling = node.sibling;
 
 		if (sibling !== null) {

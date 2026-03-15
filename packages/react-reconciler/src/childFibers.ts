@@ -72,7 +72,7 @@ const ChildReconciler = (shouldTrackEffects: boolean) => {
 		}
 
 		if (__DEV__) {
-			console.warn('未实现的 reconcile 类型2', newChild);
+			console.warn('未实现的 reconcile 类型', newChild);
 		}
 
 		return null;

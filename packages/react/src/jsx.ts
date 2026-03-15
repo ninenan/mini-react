@@ -99,7 +99,7 @@ export const jsxDEV = (type: ElementType, config: NeverAny) => {
 		}
 
 		// 判断 ref
-		if (props === 'ref') {
+		if (prop === 'ref') {
 			if (val !== undefined) {
 				ref = val;
 			}
@@ -107,7 +107,7 @@ export const jsxDEV = (type: ElementType, config: NeverAny) => {
 		}
 
 		if ({}.hasOwnProperty.call(config, prop)) {
-			props[props] = val;
+			props[prop] = val;
 		}
 	}
 
