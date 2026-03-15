@@ -18,6 +18,7 @@ export const commitMutationEffects = (finishedWork: FiberNode) => {
 		) {
 			nextEffect = child;
 		} else {
+			// 向上遍历 DFS
 			up: while (nextEffect !== null) {
 				commitMutationEffectsOnFiber(nextEffect);
 				const sibling: FiberNode | null = nextEffect.sibling;
@@ -51,9 +52,9 @@ const commitPlacement = (finishedWork: FiberNode) => {
 		console.warn('执行 Placement 操作', finishedWork);
 	}
 
-	// parent DOM
+	// 找到父节点 parent DOM
 	const hostParent = getHostParent(finishedWork);
-	// finishedWork ~~ DOM append parent DOM 中
+	// 找到 finishedWork 对应的 DOM 节点 append parent DOM 中
 	if (hostParent !== null) {
 		appendPlacementNodeIntoContainer(finishedWork, hostParent);
 	}
@@ -88,7 +89,7 @@ export const appendPlacementNodeIntoContainer = (
 	hostParent: Container
 ) => {
 	if (finishedWork.tag === HostComponent || finishedWork.tag === HostText) {
-		appendChildToContainer(finishedWork.stateNode, hostParent);
+		appendChildToContainer(hostParent, finishedWork.stateNode);
 		return;
 	}
 

@@ -2,6 +2,7 @@ import { FiberNode } from './fiber';
 import { NoFlags } from './fiberFlags';
 import {
 	appendInitialChild,
+	Container,
 	createInstance,
 	createTextInstance
 } from 'hostConfig';
@@ -48,7 +49,7 @@ export const completeWork = (wip: FiberNode) => {
 };
 
 // 在 parent 节点中插入 wip 节点
-const appendAllChildren = (parent: Element, wip: FiberNode) => {
+const appendAllChildren = (parent: Container, wip: FiberNode) => {
 	let node = wip.child;
 
 	while (node !== null) {
